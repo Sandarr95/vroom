@@ -590,7 +590,7 @@ inline Route format_route(const Input& input,
     current_load -= current_job.delivery;
     sum_pickups += current_job.pickup;
     sum_deliveries += current_job.delivery;
-    assert(current_load <= v.capacity);
+    //assert(current_load <= v.capacity);
 
 #ifndef NDEBUG
     check_precedence(input, expected_delivery_ranks, tw_r.route[r]);

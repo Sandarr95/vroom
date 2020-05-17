@@ -69,7 +69,7 @@ void RawRoute::update_amounts(const Input& input) {
       current_nb_pickups += 1;
       break;
     case JOB_TYPE::DELIVERY:
-      assert(job.delivery <= current_pd_load);
+      //assert(job.delivery <= current_pd_load);
       current_pd_load -= job.delivery;
       current_nb_deliveries += 1;
       break;
@@ -80,7 +80,7 @@ void RawRoute::update_amounts(const Input& input) {
     _nb_pickups[i] = current_nb_pickups;
     _nb_deliveries[i] = current_nb_deliveries;
   }
-  assert(_pd_loads.back() == input.zero_amount());
+  //assert(_pd_loads.back() == input.zero_amount());
 
   Amount current_deliveries(input.zero_amount());
 
