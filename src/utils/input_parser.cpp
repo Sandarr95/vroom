@@ -34,6 +34,8 @@ All rights reserved (see LICENSE).
 #include "utils/exception.h"
 #include "utils/input_parser.h"
 
+#include <iostream>
+
 namespace vroom {
 namespace io {
 
@@ -605,6 +607,13 @@ Input parse(const CLArgs& cl_args) {
         // Defining pickup job.
         auto& json_pickup = json_shipment["pickup"];
         auto pickup_amount = get_amount(json_pickup, "amount", amount_size);
+        std::cout
+          << "Pickup amount: "
+          << amount_size << ','
+          << pickup_amount.size() << ','
+          << pickup_amount[0] << ','
+          << pickup_amount[1]
+          << std::endl;
 
         check_id(json_pickup, "pickup");
         check_location(json_pickup, "pickup");
@@ -621,6 +630,14 @@ Input parse(const CLArgs& cl_args) {
         // Defining delivery job.
         auto& json_delivery = json_shipment["delivery"];
         auto delivery_amount = get_amount(json_delivery, "amount", amount_size);
+
+        std::cout
+          << "Delivery amount: "
+          << amount_size << ','
+          << delivery_amount.size() << ','
+          << delivery_amount[0] << ','
+          << delivery_amount[1]
+          << std::endl;
 
         check_id(json_delivery, "delivery");
         check_location(json_delivery, "delivery");
