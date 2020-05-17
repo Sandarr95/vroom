@@ -106,9 +106,6 @@ void Input::add_shipment(const Job& pickup, const Job& delivery) {
   if (pickup.priority != delivery.priority) {
     throw Exception(ERROR::INPUT, "Inconsistent shipment priority.");
   }
-  if (!(pickup.pickup == delivery.delivery)) {
-    throw Exception(ERROR::INPUT, "Inconsistent shipment amount.");
-  }
   if (pickup.skills.size() != delivery.skills.size()) {
     throw Exception(ERROR::INPUT, "Inconsistent shipment skills.");
   }
