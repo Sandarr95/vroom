@@ -34,6 +34,8 @@ All rights reserved (see LICENSE).
 #include "utils/exception.h"
 #include "utils/input_parser.h"
 
+#include <iostream>
+
 namespace vroom {
 namespace io {
 
@@ -469,12 +471,12 @@ Input parse(const CLArgs& cl_args) {
         check_shipment(json_shipment);
 
         // Retrieve common stuff for both pickup and delivery.
-        auto amount = get_amount(json_shipment, "amount", amount_size);
         auto skills = get_skills(json_shipment);
         auto priority = get_priority(json_shipment);
 
         // Defining pickup job.
         auto& json_pickup = json_shipment["pickup"];
+        auto pickup_amount = get_amount(json_pickup, "amount", amount_size);
 
         check_id(json_pickup, "pickup");
         check_location_index(json_pickup, "pickup", matrix_size);
@@ -488,13 +490,14 @@ Input parse(const CLArgs& cl_args) {
                                 parse_coordinates(json_pickup, "location"))
                      : Location(pickup_loc_index),
                    get_service(json_pickup),
-                   amount,
+                   pickup_amount,
                    skills,
                    priority,
                    get_job_time_windows(json_pickup));
 
         // Defining delivery job.
         auto& json_delivery = json_shipment["delivery"];
+        auto delivery_amount = get_amount(json_delivery, "amount", amount_size);
 
         check_id(json_delivery, "delivery");
         check_location_index(json_delivery, "delivery", matrix_size);
@@ -508,7 +511,7 @@ Input parse(const CLArgs& cl_args) {
                                   parse_coordinates(json_delivery, "location"))
                        : Location(delivery_loc_index),
                      get_service(json_delivery),
-                     amount,
+                     delivery_amount,
                      skills,
                      priority,
                      get_job_time_windows(json_delivery));
@@ -598,12 +601,19 @@ Input parse(const CLArgs& cl_args) {
         check_shipment(json_shipment);
 
         // Retrieve common stuff for both pickup and delivery.
-        auto amount = get_amount(json_shipment, "amount", amount_size);
         auto skills = get_skills(json_shipment);
         auto priority = get_priority(json_shipment);
 
         // Defining pickup job.
         auto& json_pickup = json_shipment["pickup"];
+        auto pickup_amount = get_amount(json_pickup, "amount", amount_size);
+        std::cout
+          << "Pickup amount: "
+          << amount_size << ','
+          << pickup_amount.size() << ','
+          << pickup_amount[0] << ','
+          << pickup_amount[1]
+          << std::endl;
 
         check_id(json_pickup, "pickup");
         check_location(json_pickup, "pickup");
@@ -612,13 +622,22 @@ Input parse(const CLArgs& cl_args) {
                    JOB_TYPE::PICKUP,
                    parse_coordinates(json_pickup, "location"),
                    get_service(json_pickup),
-                   amount,
+                   pickup_amount,
                    skills,
                    priority,
                    get_job_time_windows(json_pickup));
 
         // Defining delivery job.
         auto& json_delivery = json_shipment["delivery"];
+        auto delivery_amount = get_amount(json_delivery, "amount", amount_size);
+
+        std::cout
+          << "Delivery amount: "
+          << amount_size << ','
+          << delivery_amount.size() << ','
+          << delivery_amount[0] << ','
+          << delivery_amount[1]
+          << std::endl;
 
         check_id(json_delivery, "delivery");
         check_location(json_delivery, "delivery");
@@ -627,7 +646,7 @@ Input parse(const CLArgs& cl_args) {
                      JOB_TYPE::DELIVERY,
                      parse_coordinates(json_delivery, "location"),
                      get_service(json_delivery),
-                     amount,
+                     delivery_amount,
                      skills,
                      priority,
                      get_job_time_windows(json_delivery));
